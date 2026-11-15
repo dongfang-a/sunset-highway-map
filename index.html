@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f6f4ed">
+  <meta name="description" content="在地图上探索华盛顿州 Sunset Highway 的 1915、1919 年历史走廊、现存旧路和渡河遗迹。">
+  <title>Sunset Highway · 历史路线地图</title>
+  <link rel="canonical" href="https://dongfang-a.github.io/sunset-highway-map/">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./vendor/leaflet.css">
+  <link rel="stylesheet" href="./styles.css">
+  <script defer src="./vendor/leaflet.js"></script>
+  <script defer src="./app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#map">跳到路线地图</a>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M11 31c14-5 1-13 17-22M17 33c14-6 0-13 15-22"/><path class="sun" d="M8 13a7 7 0 0 1 13-3"/></svg></div>
+      <div><h1>Sunset Highway</h1><p>华盛顿州 · 历史路线地图</p></div>
+    </div>
+    <a class="download-button" href="./downloads/Sunset_Highway_1915_1919_Detailed.kmz" download>
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v9m-3-3 3 3 3-3M4 13v4h12v-4"/></svg>
+      <span>下载 KMZ</span>
+    </a>
+  </header>
+
+  <div class="app-shell">
+    <aside class="panel" id="panel" aria-label="路线与图层">
+      <div class="panel-heading">
+        <div><span class="eyebrow">EXPLORE THE OLD ROAD</span><h2>沿着旧路，穿越华盛顿</h2><p class="intro">从 Renton 到 Idaho 州界，查看两个时期的法定走廊与留存至今的道路。</p></div>
+        <button type="button" class="panel-toggle" id="panelToggle" aria-controls="panelBody" aria-expanded="false"><span id="panelToggleText">路线与图层</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 12 5-5 5 5"/></svg></button>
+      </div>
+      <div class="panel-body" id="panelBody">
+        <section class="panel-section version-section">
+          <fieldset class="versions">
+            <legend>选择路线版本</legend>
+            <label class="version-option"><input type="radio" name="version" value="1919" checked><span class="version-dot"></span><span><strong>1919 主走廊</strong><small>Old Blewett Pass · Wenatchee</small></span><span class="year-chip">1919</span></label>
+            <label class="version-option"><input type="radio" name="version" value="1915"><span class="version-dot"></span><span><strong>1915 替代走廊</strong><small>Ellensburg · Vantage · Quincy</small></span><span class="year-chip amber">1915</span></label>
+            <label class="version-option compare"><input type="radio" name="version" value="both"><span class="version-dot"></span><span><strong>两线对比</strong><small>在同一张地图上比较路线变化</small></span></label>
+          </fieldset>
+          <p class="field-note">共用西段和东段始终显示。年份指法定路线版本。</p>
+        </section>
+
+        <section class="panel-section">
+          <h3>叠加图层</h3>
+          <div class="layer-options">
+            <label class="layer-option"><span><strong>现存旧路细节</strong><small>东段旧铺装与废弃弯道</small></span><input type="checkbox" id="layerRemnants" checked><span class="switch" aria-hidden="true"></span></label>
+            <label class="layer-option"><span><strong>历史地点</strong><small>点击圆点查看地点说明</small></span><input type="checkbox" id="layerPois" checked><span class="switch" aria-hidden="true"></span></label>
+            <label class="layer-option"><span><strong>1919 南支线</strong><small>Teanaway → Ellensburg</small></span><input type="checkbox" id="layerSouth"><span class="switch" aria-hidden="true"></span></label>
+            <label class="layer-option"><span><strong>Seattle 连接</strong><small>附加的市区连接走廊</small></span><input type="checkbox" id="layerSeattle"><span class="switch" aria-hidden="true"></span></label>
+          </div>
+        </section>
+
+        <section class="panel-section legend-section">
+          <h3>读懂这张地图</h3>
+          <div class="legend-grid">
+            <span><i class="line-swatch green"></i>现存旧路</span>
+            <span><i class="line-swatch blue"></i>共用 / 1919 参照</span>
+            <span><i class="line-swatch orange"></i>1915 替代走廊</span>
+            <span><i class="line-swatch red"></i>原线待考证</span>
+            <span><i class="line-swatch cyan"></i>历史渡河示意</span>
+            <span><i class="point-swatch"></i>历史地点</span>
+          </div>
+          <p class="accuracy-note">颜色区分历史考证程度，并非通行指示。现代道路参照与概略连接已单独标明；现存旧路也可能经历后续改建。</p>
+          <a class="text-link" href="./downloads/route-notes.md" target="_blank" rel="noopener">查看精度与资料来源 <span aria-hidden="true">↗</span></a>
+        </section>
+        <footer class="panel-footer"><span>历史查看用途 · 不作为驾驶导航</span><span>资料整理于 <time datetime="2026-11-14">2026.11.14</time></span><a href="https://github.com/dongfang-a/sunset-highway-map" target="_blank" rel="noopener">网页源码与反馈 ↗</a></footer>
+      </div>
+    </aside>
+
+    <main class="map-region" aria-label="Sunset Highway 互动地图">
+      <div id="map" tabindex="0" aria-label="可缩放的历史路线地图，点击线段或地点查看说明"></div>
+      <div class="map-caption" aria-live="polite"><span class="live-dot" aria-hidden="true"></span><div><strong id="viewTitle">1919 主走廊</strong><span id="viewSubtitle">正在载入路线…</span></div></div>
+      <button type="button" class="fit-button" id="fitAll" title="回到全线范围" aria-label="回到全线范围"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 3H3v4m10-4h4v4M3 13v4h4m10-4v4h-4M7 7h6v6H7z"/></svg><span>全线范围</span></button>
+      <div class="status-card loading" id="dataStatus" role="status"><span class="spinner" aria-hidden="true"></span><div><strong id="statusTitle">正在展开历史路线</strong><p id="statusMessage">载入详细路线与地点资料…</p></div><button type="button" id="retryData" hidden>重试</button></div>
+      <div class="tile-notice" id="tileNotice" role="status" hidden><span>底图暂时无法加载，路线仍可浏览。</span><button type="button" id="retryTiles">重试底图</button></div>
+      <div class="map-hint" id="mapHint">点击路线或圆点，查看历史与精度说明</div>
+    </main>
+  </div>
+  <noscript><div class="noscript">请开启 JavaScript 查看互动地图，或<a href="./downloads/Sunset_Highway_1915_1919_Detailed.kmz">下载 KMZ</a>。</div></noscript>
+</body>
+</html>
